@@ -7,6 +7,24 @@
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="21" />
+    
+    <permission
+			 android:name="org.btssio.edf_fx_lebret.permission.MAPS_RECEIVE"
+			 android:protectionLevel="signature" />
+			 <uses-permission android:name="org.btssio.edf_fx_lebret.permission.MAPS_RECEIVE" />
+			 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+			 <uses-permission android:name="android.permission.INTERNET" />
+			 <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+			 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+			 
+			 <!-- Required to show current location -->
+			 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+			 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+			
+			 <!-- Required OpenGL ES 2.0. for Maps V2 -->
+			 <uses-feature
+			 android:glEsVersion="0x00020000"
+			 android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -30,6 +48,19 @@
             android:name=".ModifierClient"
             android:label="@string/title_activity_modifier_client" >
         </activity>
+        <activity
+            android:name=".ActivityGeoloc"
+            android:label="@string/title_activity_activity_geoloc" >
+        </activity>
+        
+        <meta-data
+			 android:name="com.google.android.maps.v2.API_KEY"
+			 android:value="AIzaSyDK4HoltF22Twh45MNc-wQ6Q0JMvHt-05I" />
+			
+			<meta-data
+			 android:name="com.google.android.gms.version"
+			 android:value="@integer/google_play_services_version" />
+        
     </application>
 
 </manifest>

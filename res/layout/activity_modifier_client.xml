@@ -260,7 +260,9 @@
 
     </LinearLayout>
 
-</ScrollView><LinearLayout
+</ScrollView>
+
+<!-- <LinearLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
@@ -288,4 +290,4 @@
 
 </LinearLayout><ScrollView>
 
-</ScrollView>
+</ScrollView> -->

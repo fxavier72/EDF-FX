@@ -42,24 +42,7 @@ public class ModifierClient extends Activity implements OnClickListener {
 		DbAdapter bdd = new DbAdapter(this).open();
 		leClient = bdd.getClientWithId(this.getIntent().getExtras().getString("identifiant"));
 		bdd.close();
-		
-		Log.d("Étape", "~ Création du client à partir des extras"); 
-		//Initialisation du client à partir des paramètres qu'a envoyé l'activité "AfficheListeClient" avant de lancer cette activité
-		leClient = new Clients(	this.getIntent().getExtras().getString("identifiant"),
-								this.getIntent().getExtras().getString("nom"),
-								this.getIntent().getExtras().getString("prenom"),
-								this.getIntent().getExtras().getString("adresse"),
-								this.getIntent().getExtras().getString("codePostal"),
-								this.getIntent().getExtras().getString("ville"),
-								this.getIntent().getExtras().getString("telephone"),
-								this.getIntent().getExtras().getString("idCompteur"),
-								this.getIntent().getExtras().getString("dateAncienReleve"),
-								this.getIntent().getExtras().getDouble("ancienReleve"));
-		leClient.setDateDernierReleve(	this.getIntent().getExtras().getString("dateDernierReleve"));
-		leClient.setSignatureBase64(	this.getIntent().getExtras().getString("signatureBase64"));
-		leClient.setDernierReleve(		this.getIntent().getExtras().getDouble("dernierReleve"));
-		leClient.setSituation(			this.getIntent().getExtras().getInt("situation"));
-		
+
 		Log.d("Étape", "~ Initialisation de l'activité");
 		//On va remplir les "TextView"s grâce au client
 		initialiserActivite();
@@ -95,7 +78,7 @@ public class ModifierClient extends Activity implements OnClickListener {
 			/* ~~~~~~~~~~~ *
 			 *  Bouton OK  *
 			 * ~~~~~~~~~~~ */
-			case R.id.btnOk:
+			case R.id.modCli_btnOk:
 				Log.d("Étape", "~ Click sur Ok détecté");
 				try {
 					//On enregistre les modifications dans la bdd
@@ -120,7 +103,7 @@ public class ModifierClient extends Activity implements OnClickListener {
 			/* ~~~~~~~~~~~~~~~~ *
 			 *  Bouton Annuler  *
 			 * ~~~~~~~~~~~~~~~~ */
-			case R.id.:
+			case R.id.modCli_btnAnnuler:
 				Log.d("Étape", "~ Click sur Annuler détecté");
 				finish(); //On termine l'activité ModificationClient
 				break;
@@ -131,7 +114,7 @@ public class ModifierClient extends Activity implements OnClickListener {
 				Log.d("Étape", "~ Click sur Géoloc. détecté");
 				
 				//On va lancer l'activité de géolocalisation
-				Intent theIntent = new Intent(this, ActivityGeolocalisation.class);
+				Intent theIntent = new Intent(this, ActivityGeoloc.class);
 				
 				//On passe en paramètre l'identifiant du client actuel pour pouvoir récupérer son adresse par la suite
 				theIntent.putExtra("identifiant", leClient.getIdentifiant());
@@ -172,14 +155,14 @@ public class ModifierClient extends Activity implements OnClickListener {
 	{
 		Log.d("Étape", "~ Vérification des champs vides");
 		//On vérifie qu'il n'y ai pas de champ vide
-		checkEditTextVide();
+		//checkEditTextVide();
 		
 		//Création de variables qui contiendront les saisies "cast"ées si elles sont correctes
 		Double doubleReleve = 0.0;
 		int intSituation = 0;
 		
 		Log.d("Étape", "~ Vérification du champ \"Relevé\"");
-		//On vérifie que la valeur saisie dans editTextReleve peut être cast en Double
+		//On vérifie que la valeur saisie du releve dans editTextReleve peut être cast en Double
 		try {
 			doubleReleve = Double.valueOf(editTextReleve.getText().toString());
 		} catch (Exception ex) {
@@ -188,7 +171,7 @@ public class ModifierClient extends Activity implements OnClickListener {
 		}//fin catch
 		
 		
-		//On vérifie que la saisie correspond à un nombre entier
+		//On vérifie que la saisie de la situation correspond à un nombre entier
 		try {
 			intSituation = Integer.valueOf(editTextSituation.getText().toString());
 			//On vérifie que la situation saisie n'est pas 0
@@ -210,36 +193,6 @@ public class ModifierClient extends Activity implements OnClickListener {
 	}//fin checkEditText
 	
 	/**
-	 * Vérifie si les zones de saisies sont vide.
-	 * 
-	 * Dans le cas où l'une d'entre-elles serait vide, une exception est levée.
-	 * @throws Une exception "emptyFieldError" [Exception]
-	 */
-	private void checkEditTextVide() throws Exception
-	{
-		//Si le champ "Relevé" est vide
-		if (editTextReleve.getText().equals(""))
-		{
-			Log.d("Étape", "~ Champ \"Relevé\" vide");
-			throw new Exception("Veuillez remplir le champ \"Relevé\" !", new Throwable("emptyFieldError"));
-		}//fin if
-			
-		//Si le champ "Date" est vide
-		if (editTextDateReleve.getText().equals(""))
-		{
-			Log.d("Étape", "~ Champ \"Date\" vide");
-			throw new Exception("Veuillez remplir le champ \"Date\" !", new Throwable("emptyFieldError"));
-		}//fin if
-			
-		//Si le champ "Situation" est vide
-		if (editTextSituation.getText().equals(""))
-		{
-			Log.d("Étape", "~ Champ \"Situation\" vide");
-			throw new Exception("Veuillez remplir le champ \"Situation\" !", new Throwable("emptyFieldError"));
-		}//fin if
-	}//fin checkEditTextVide
-	
-	/**
 	 * Initialise les "TextView"s et les "EditText"s en fonction des vues xml,
 	 * et modifie leur valeur en fonction du client.
 	 */
@@ -248,13 +201,13 @@ public class ModifierClient extends Activity implements OnClickListener {
 		//On va initialiser les composants graphiques de l'activité
 		textViewIdentifiant			= (TextView) this.findViewById(R.id.txtIdentifiantValue);
 		textViewIdentite			= (TextView) this.findViewById(R.id.txtIdentiteValue);
-		textViewTelephone			= (TextView) this.findViewById(R.id.txtTelephone);
-		textViewAdresse				= (TextView) this.findViewById(R.id.txtAdresse);
+		textViewTelephone			= (TextView) this.findViewById(R.id.txtTel);
+		textViewAdresse				= (TextView) this.findViewById(R.id.txtAdresseValue);
 		textViewCp					= (TextView) this.findViewById(R.id.txtCp);
 		textViewVille				= (TextView) this.findViewById(R.id.txtVille);
 		textViewCompteur			= (TextView) this.findViewById(R.id.txtCompteurValue);
 		textViewAncienReleve		= (TextView) this.findViewById(R.id.txtAncienReleveValue);
-		textViewDateAncienReleve	= (TextView) this.findViewById(R.id.txtDateAncienReleveValue);
+		textViewDateAncienReleve	= (TextView) this.findViewById(R.id.txvDateAncienReleveValue);
 		editTextReleve				= (EditText) this.findViewById(R.id.editReleve);
 		editTextDateReleve			= (EditText) this.findViewById(R.id.editDateReleve);
 		editTextSituation			= (EditText) this.findViewById(R.id.editSituation);
@@ -271,10 +224,10 @@ public class ModifierClient extends Activity implements OnClickListener {
 		textViewDateAncienReleve	.setText(leClient.getDateAncienReleve());
 		
 		//On déclare les boutons
-		btnOk = (Button) this.findViewById(R.id.btnOk);
+		btnOk = (Button) this.findViewById(R.id.modCli_btnOk);
 		btnOk.setOnClickListener(this);
 		
-		btnAnnuler = (Button) this.findViewById(R.id.btnAnnuler);
+		btnAnnuler = (Button) this.findViewById(R.id.modCli_btnAnnuler);
 		btnAnnuler.setOnClickListener(this);
 		
 		btnGeoloc = (Button) this.findViewById(R.id.btnGeoloc);

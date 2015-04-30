@@ -6,5 +6,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_affiche_liste_clients">AfficheListeClientsActivity</string>
     <string name="title_activity_modifier_client">ModifierClient</string>
+    <string name="title_activity_activity_geoloc">ActivityGeoloc</string>
 
 </resources>
